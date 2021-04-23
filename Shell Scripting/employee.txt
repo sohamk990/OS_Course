@@ -1,0 +1,13 @@
+100 Thomas Manager Sales $5,000 ​
+200 Jason Developer Technology $5,500
+300 Sanjay Sysadmin Technology $7,000
+400 Nisha Manager Marketing $9,500
+500 Randy DBA Technology $6,000​
+600 ajay manager account $45000
+700 sunil clerk account $25000
+800 varun manager sales $50000
+900 amit manager account $47000
+1000 tarun peon sales $15000
+1100 deepak clerk sales $23000
+1200 sunil peon sales $13000
+1300 satvik director purchase $80000 
