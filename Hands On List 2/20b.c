@@ -1,28 +1,24 @@
 // Writer
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
 #include <stdio.h>
-#include <stdlib.h>
+#include <string.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 int main()
 {
-    // opening the file for reading
-    int fd = open("myfifo", O_WRONLY);
-    if(fd == -1)
-    {
-        printf("myfifo failed to open!\n");
-        return -1;
-    }
-    else
-        printf("Fifo file opened successfully!\n");
+    // opening the file for reading    
+    int fd;
+    char buffer[100];     
+    mkfifo("myfifo", 0666);
+    fd = open("myfifo", O_WRONLY | O_TRUNC);
 
     while(1)
     {
-        char* buffer = (char*)calloc(80, sizeof(char));
-        scanf("%s",buffer);
-        write(fd, buffer, sizeof(buffer));
+        fgets(buffer, 100, stdin);
+        write(fd, buffer, strlen(buffer)+1);        
     }
     close(fd);
+    return 0;
 }

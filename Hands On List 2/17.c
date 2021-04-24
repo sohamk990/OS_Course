@@ -7,9 +7,11 @@ int main()
 {
     int pipefd[2], result, pid, method;
 
-    printf(" Method \n 1) dup \n 2) dup2 \n 3) fcnlt \n Select: ");
+    printf(" Choose method \n 1) dup \n 2) dup2 \n 3) fcnlt \n Select: ");
     scanf("%d",&method);
-    if(method!=1 || method!=2 || method!=3)
+    // printf("%d",method);
+
+    if(method!=1 && method!=2 && method!=3)
     {
         printf("Wrong Choice!!");
         return 0;
@@ -26,6 +28,7 @@ int main()
     {
         // closing the read end of the pipe
         close(pipefd[0]);
+        //closing normal stdout
         close(1);
 
         if(method == 1)
@@ -49,6 +52,7 @@ int main()
     {
         // closing the write end of the file
         close(pipefd[1]);
+        //closing normal stdin
         close(0);
         
         if(method == 1)

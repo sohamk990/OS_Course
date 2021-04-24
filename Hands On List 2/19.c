@@ -10,11 +10,14 @@ int main()
     int mode,result;
     system("mknod mypipe_mknod p");
     system("mkfifo mypipe_mkfifo");
-    system("strace -c mknod  and strace -c mkfifo");
+
+    system("strace -c mknod ");
+    system("strace -c mkfifo");
+    
     system("echo Running the strace commands shows that  mkfifio is better than mknod as it takes lesser time to execute.");
     
 
-    printf("Mode \n 1) mknod \n 2)mkfifo \n Select: ");
+    printf("Mode \n 1) mknod \n 2) mkfifo \n Select: ");
     scanf("%d",&mode);
 
     if(mode == 1)

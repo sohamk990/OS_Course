@@ -1,32 +1,24 @@
 // reader
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
 #include <stdio.h>
-#include <stdlib.h>
+#include <string.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 int main()
 {
     // opening the file for reading
-    int fd = open("myfifo", O_RDONLY);
-    if(fd == -1)
-    {
-        printf("myfifo failed to opned! \n");
-        return 0;
-    }
-    else
-    {
-        printf("Fifo file opened successfully!\n");
-    }
-    
+    int fd1;    
+    char buffer[100];
+    mkfifo("myfifo", 0666);
+    fd1 = open("myfifo", O_RDONLY);
+
     while(1)
     {
-        char* buffer = (char*)calloc(80, sizeof(char));
-        read(fd, buffer, sizeof(buffer));
-        printf("%s\n", buffer);
-    }
-
-    close(fd);
+        read(fd1, buffer, 100);
+        printf("%s", buffer);
+    }    
+    close(fd1);
     return 0;
 }
