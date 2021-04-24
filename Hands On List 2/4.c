@@ -9,22 +9,15 @@ unsigned long long rdtsc ()
     return time;
 }
 
-// static __inline__ unsigned long long rdtsc(void)
-// {
-//   unsigned end, start;
-//   __asm__ __volatile__ ("rdtsc" : "=a"(start), "=d"(end));
-//   return ( (unsigned long long)start)|( ((unsigned long long)end)<<32 );
-// }
-
 int main()
 {
     unsigned long long start_time, end_time;
     int i;
-    start_time = rdtsc();
 
+    start_time = rdtsc();
     for(i = 0; i < 100; i++)
     {
-      getppid();
+        getppid();
     }
     end_time = rdtsc();
 

@@ -10,20 +10,16 @@ int main()
     pid = fork();
 
     if(pid != 0)
-    {
-        // we are in the parent process
-        
+    {        
         sleep(1);
         // so that signal(SIGINT, SIG_IGN) gets executed before this 
-        printf("Sending the first SIGINT signal!\n");
-
+        printf("Sending the first SIGINT signal which wiil be ignored \n");
         // a signal is sent to terminate the child process
         kill(pid, SIGINT);
 
         // sleeps for 2 seconds to observe the bhavior of the child process
         sleep(2);
-        printf("Sending the seconds SIGINT signal!\n"); 
-        
+        printf("Sending the second SIGINT signal which will be executed default \n"); 
         // sends another signal to terminate the child process
         kill(pid, SIGINT);
 
@@ -31,16 +27,16 @@ int main()
     else
     {
         int i = 0;
-        signal(SIGINT, SIG_IGN); // this gets executed before the parent process
+        // this gets executed before the parent process and will ignore first SIGINT
+        signal(SIGINT, SIG_IGN);
         
         while(1)
         {
-            // this is just to ensure that the terminal does not get cluttered with a lot of print statements
             sleep(1);
             // to display the current status of the child process
             printf("The child process is alive!\n");
-            i = i + 1;
-            if(i == 1)
+            i++;
+            if(i&1)
             {
                 // restoring the signal's behavior to default, this occurs before the second signal is sent from the parent process
                 signal(SIGINT, SIG_DFL); 

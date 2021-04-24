@@ -27,7 +27,7 @@ int main(void)
         struct sigaction* myaction = (struct sigaction*) calloc(1, sizeof(struct sigaction));
         myaction->sa_handler = SIG_IGN;
         
-         // configuring the child process to ignore the SIGINT signal
+        // configuring the child process to ignore the SIGINT signal
         sigaction(SIGINT, myaction, NULL);
         printf("Changed the SIGINT's behavior to be ignored!\n");
         int i = 0;
@@ -36,7 +36,7 @@ int main(void)
             sleep(2);
             printf("The child process is alive!\n");
             i++;
-            if(i == 1)
+            if(i&1)
             {
                 myaction->sa_handler = SIG_DFL;
                 sigaction(SIGINT, myaction, NULL);

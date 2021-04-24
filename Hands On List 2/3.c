@@ -18,6 +18,7 @@ int main()
     struct rlimit limit;
     int res;
 
+    //Printing the limits
     res = getrlimit(RLIMIT_CORE, &limit);
     check(res);
     printf("Soft limit on maximum size of core file: %ld\n", limit.rlim_cur);
@@ -28,6 +29,7 @@ int main()
     res = setrlimit(RLIMIT_CORE, &limit);
     check(res);
     
+    //Printing the limits
     res = getrlimit(RLIMIT_CORE, &limit);
     check(res);
     printf("New Soft limit on maximum size of core file: %ld\n", limit.rlim_cur);

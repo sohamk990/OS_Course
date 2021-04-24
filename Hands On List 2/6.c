@@ -26,20 +26,25 @@ void *thread_3_function(void *vargp)
 
 int main()
 {
-    pthread_t thread_1,thread_2,thread_3;
     int res;
+    pthread_t thread_1,thread_2,thread_3;
+    
     printf("This is Main thread! \n");
 
+    //Creating thread 1
     res = pthread_create(&thread_1, NULL, thread_1_function, NULL);
     pthread_join(thread_1, NULL);
 
+    //Creating thread 2
     res = pthread_create(&thread_2, NULL, thread_2_function, NULL);
     pthread_join(thread_2, NULL);
     
+    //Creating thread 3
     res = pthread_create(&thread_3, NULL, thread_3_function, NULL);
     pthread_join(thread_3, NULL);
     
     printf("Back to the Main thread!\n");
+    
     pthread_exit(NULL);
     return 0;
 }

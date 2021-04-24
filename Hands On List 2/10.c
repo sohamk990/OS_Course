@@ -3,20 +3,20 @@
 #include <signal.h> 
 #include <stdlib.h>
 
-void general_purpose_signal_catcher(int signal_name)
+void signal_catcher(int signal_name)
 {
-    printf("The custom signal_name handler got invoked!\n");
+    printf("SIGNAL HANDLER RUNNING\n");
     if(signal_name == SIGSEGV)
     {
-        printf("Caught SIGSEGV!\n");
+        printf("Caught SIGSEGV! \n");
     }
     else if(signal_name == SIGINT)
     {
-        printf("Caught SIGINT!\n");
+        printf("Caught SIGINT! \n");
     }
     else if(signal_name == SIGFPE)
     {
-        printf("Caught SIGFPE!\n");
+        printf("Caught SIGFPE! \n");
     }
     else
     {
@@ -31,16 +31,18 @@ int main()
     int pid;
     pid = fork();
 
-    // we are in the parent process
+    // Parent process
     if(pid != 0)
     {
         sleep(2);
         printf("Sending SIGSEGV signal_name to child!\n");
         kill(pid, SIGSEGV);
+
         sleep(1);
         printf("Sending SIGINT signal_name to child!\n");
         kill(pid, SIGINT);
         sleep(1);
+        
         printf("Sending SIGFPE signal_name to child!\n");
         kill(pid, SIGFPE);
         sleep(1);
@@ -48,14 +50,14 @@ int main()
     }
     else
     {
-        struct sigaction* myaction = (struct sigaction*)calloc(1, sizeof(struct sigaction));
-        myaction->sa_handler = general_purpose_signal_catcher;
+        struct sigaction* myaction = (struct sigaction*) calloc(1, sizeof(struct sigaction));
+        myaction->sa_handler = signal_catcher;
         myaction->sa_flags = 0;
 
-        int success;
-        success = sigaction(SIGSEGV, myaction, NULL);
-        success += sigaction(SIGINT, myaction, NULL);
-        success += sigaction(SIGFPE, myaction, NULL);
+        int success=0;
+        success += sigaction(SIGSEGV , myaction, NULL);
+        success += sigaction(SIGINT  ,  myaction, NULL);
+        success += sigaction(SIGFPE  ,  myaction, NULL);
 
         if(success == 0)
         {

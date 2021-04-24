@@ -8,17 +8,18 @@ void *myThread(void *thread_id)
    sleep(1);
    long tid;
    tid = (long)thread_id;
-   printf("Thread ID: %ld\n", tid);
+   printf(" Thread ID is: %ld \n", tid);
+   sleep(1);
    return NULL;
 }
 
 int main()
 {
-    //creating 3 threads ID
-    pthread_t thread[3];
+    //creating 3 threads
+    pthread_t thread[4];
     int i;
     
-    for(i=0; i<=2; i++)
+    for(i=1;i<=3;i++)
     {
         printf("Creating thread ID: %ld \n", thread[i]);
         pthread_create(&thread[i], NULL, myThread, (void *) (thread[i]));
