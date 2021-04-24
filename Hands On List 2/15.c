@@ -19,7 +19,12 @@ int main()
     {
         printf("Pipe created successfully \n");
     }    
-    
+    else
+    {
+        printf(" Pipe cannot be created successfully! \n");
+        return 0;
+    }
+
     pid = fork();
     
     if(pid != 0)

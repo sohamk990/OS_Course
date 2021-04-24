@@ -17,7 +17,11 @@ int main()
     {
         printf(" Pipe created successfully! \n");
     }
-
+    else
+    {
+        printf(" Pipe cannot be created successfully! \n");
+        return 0;
+    }
     printf(" Writing to the pipe!\n");
     result = write(pipefd[1], str, message_size);
     if(result > 0)

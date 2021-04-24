@@ -11,8 +11,8 @@ int main()
     int pipefd2[2];
     int pid,result;
 
-    char *str1 = "Parent to child";
-    char *str2 = "Child to parent";
+    char *str1 = "Message from parent to child";
+    char *str2 = "Message from child to parent";
     size_t message_size = strlen(str1);
 
     result=pipe(pipefd1);
@@ -22,6 +22,7 @@ int main()
     }
     else
     {
+        printf(" Pipe 1 cannot be created successfully! \n");
         return 0;
     }
 
@@ -32,6 +33,7 @@ int main()
     }
     else
     {
+        printf(" Pipe 2 cannot be created successfully! \n");
         return 0;
     }
 
