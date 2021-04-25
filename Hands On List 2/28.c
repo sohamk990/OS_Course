@@ -6,39 +6,52 @@
 
 int main()
 {
-    key_t key;
-    int msgid;
-    key = ftok(".", 'a');
+    key_t key; 
+    int msgid,val; 
+    struct msqid_ds info;
+    struct ipc_perm info_;
+    
+    // ftok to generate unique key
+    key = ftok(".", 'a'); 
+
+    // msgget creates a message queue and returns identifier
     msgid = msgget(key, 0666 | IPC_CREAT); 
-
-    struct msqid_ds* info = (struct msqid_ds*)calloc(1, sizeof(struct msqid_ds));
-
-    int val = msgctl(msgid, IPC_STAT, info);
-    if(val != 0)
+    if(msgid == -1)
     {
-        printf("Something went wrong...\n");
-        exit(-1);
+        printf("Message Queue can't be created");
+        return 0;
     }
 
-    struct ipc_perm info_ = info->msg_perm;
+    //retriving the message details
+    val = msgctl(msgid, IPC_STAT, &info);
+    if(val != 0)
+    {
+        printf("Message can't be created properly");
+        return 0;
+    }
+
+    info_ = info.msg_perm;
     printf("Existing access permissions: %d\n", info_.mode);
 
     info_.mode ++;
-    info->msg_perm = info_;
+    info.msg_perm = info_;
     
-    val = msgctl(msgid, IPC_SET, info);
+    //Setting the new permission
+    val = msgctl(msgid, IPC_SET, &info);
     if(val != 0)
     {
-        printf("Something went wrong...\n");
-        exit(-1);
+        printf("Message can't be created properly");
+        return 0;
     }
-    val = msgctl(msgid, IPC_STAT, info);
+
+    //retriving the message details
+    val = msgctl(msgid, IPC_STAT, &info);
     if(val != 0)
     {
-        printf("Something went wrong...\n");
-        exit(-1);
+        printf("Message can't be created properly");
+        return 0;
     }
-    info_ = info->msg_perm;
+    info_ = info.msg_perm;
     printf("Changed access permissions: %d\n", info_.mode);
 
     return 0;

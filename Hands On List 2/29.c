@@ -6,17 +6,29 @@
 
 int main()
 {
-    // creating a message queue
-    key_t key;
-    int msgid;
-    key = ftok(".",'a');
-    msgid = msgget(key, 0666 | IPC_CREAT);
+    key_t key; 
+    int msgid,result; 
+  
+    // ftok to generate unique key
+    key = ftok(".", 'a'); 
+
+    // msgget creates a message queue and returns identifier
+    msgid = msgget(key, 0666 | IPC_CREAT); 
     if(msgid == -1)
-        printf("Failed to create the message quque!\n");
-    sleep(3); // check here using ipcs -q about the existing message queues
+    {
+        printf("Message Queue can't be created");
+        return 0;
+    }    
+    
+    system("ipcs -q");
+
     // removing this message queue
-    int val = msgctl(msgid, IPC_RMID, NULL);
-    if(val == -1)
-        printf("Failed to remove the message queue!\n");
+    result = msgctl(msgid, IPC_RMID, NULL);
+    if(result == -1)
+    {
+        printf("Message Queu can't be removed");
+    }
+
+    system("ipcs -q");
     return 0;
 }
