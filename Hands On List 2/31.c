@@ -15,7 +15,6 @@ int main()
     union semun arg;
     int semid;
 
-    // Creating tw0 semophores binary and counting
     semid = semget( key, 1, IPC_CREAT | 0666 );
 
     printf("Making the Semaphore Binary\n");
