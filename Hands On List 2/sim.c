@@ -33,13 +33,14 @@ int main()
 
     key = ftok(".",'a');
     semid = semget( key, 1, IPC_CREAT | 0666 );
-    arg.val = 1;
-    semctl(semid, 0, SETVAL, arg);
+    printf("%d\n",semid);
+    // arg.val = 1;
+    // semctl(semid, 0, SETVAL, arg);
 
     printf("Before\n");
     semop(semid,&buf,1);
     printf("Inside\n"); 
-    i++;
+    
     printf("Enter to unlock\n");
     getchar();
 
