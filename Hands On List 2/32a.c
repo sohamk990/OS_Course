@@ -18,11 +18,12 @@ int main()
     key_t key, key1, key2, key3;
     int semid,shmid1,shmid2,shmid3,size,number_0f_semaphore,ndata1,ndata2,ndata3,result;
     union semun arg;
+    char c;
 
     //creating semaphore
     key = ftok(".",'a');
     number_0f_semaphore = 3;
-    semid = semget( key, number_0f_semaphore , 0666| IPC_CREAT );
+    semid = semget( key, number_0f_semaphore , 0644| IPC_CREAT );
     
     printf("Making the Semaphore Binary\n");    
     arg.val = 1;
@@ -75,7 +76,7 @@ int main()
     printf("Data3: %s\n", data3);
 
 
-    printf("Final data: \n");
+    getchar();
     // writing the data1 (binary semaphore)
     buffer.sem_num = 0;
     buffer.sem_op = -1;
@@ -84,8 +85,11 @@ int main()
     ndata1 = atoi(data1);
     ndata1++;
     sprintf(data1, "%d", ndata1);
-    printf("Data1: %s\n", data1);
-
+    
+    printf("Press to unlock Data 1\n");
+    getchar();
+    // putchar(c);
+    
     buffer.sem_num = 0;
     buffer.sem_op = 1;
     semop(semid, &buffer, 1);
@@ -100,7 +104,9 @@ int main()
     ndata2 = atoi(data2);
     ndata2++;
     sprintf(data2, "%d", ndata2);
-    printf("Data2: %s\n", data2);
+    printf("Press to unlock Data 2\n");
+    getchar();
+    // putchar(c);
 
     buffer.sem_num = 1;
     buffer.sem_op = 1;
@@ -115,12 +121,18 @@ int main()
     ndata3 = atoi(data3);
     ndata3++;
     sprintf(data3, "%d", ndata3);
-    printf("Data3: %s\n", data3);
+    printf("Press to unlock Data 3\n");
+    getchar();
+    // putchar(c);
 
     buffer.sem_num = 1;
     buffer.sem_op = 1;
     semop(semid, &buffer, 1);
 
+    printf("Final data: \n");
+    printf("Data1: %s\n", data1);
+    printf("Data2: %s\n", data2);
+    printf("Data3: %s\n", data3);
 
     printf("Removing the semaphore!\n");
     result = semctl(semid, 0, IPC_RMID);

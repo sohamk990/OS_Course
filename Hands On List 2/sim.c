@@ -26,19 +26,27 @@ union semun
 int main()
 {
     key_t key;
+    int semid;
+    int i=0;
+    union semun arg;    
+    struct sembuf buf = {0,-1,0};
+
     key = ftok(".",'a');
-    struct sembuf buf ={0,-1,0};
-    int semid = semget( key, 1, IPC_CREAT | 0644 );
+    semid = semget( key, 1, IPC_CREAT | 0666 );
+    arg.val = 1;
+    semctl(semid, 0, SETVAL, arg);
 
     printf("Before\n");
     semop(semid,&buf,1);
-    
-    printf("Inside\n");    
+    printf("Inside\n"); 
+    i++;
     printf("Enter to unlock\n");
     getchar();
 
     //unlocking
     buf.sem_op=1;
     semop(semid,&buf,1);
+    
+    printf("%d\n",i);
     return 0;
 }

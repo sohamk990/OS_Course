@@ -8,48 +8,48 @@
 int main()
 {
     key_t key;
-    int rand;
+    int size,shmid,result;
 
     key = ftok(".",'a');
-    int size = 1024;
-    int shmid = shmget(key, size, 0666|IPC_CREAT); 
-    
+    size = 1024;
+    shmid = shmget(key, size, IPC_CREAT | 0644);
     printf("ID for the shared memory is: %d\n", shmid);
 
     char *data = (char*) shmat(shmid,(void*)0,0);
-
     printf("Reading the data before writing anything! \n");
     scanf(" %[^\n]",data);
-    
-    
-    printf("Reading the data after writing!\n");
-    printf("Data is: %s \n",pointer);
-    
-    
+    printf("Data is: %s \n",data);
+        
     printf("Attached with a readonly pointer!\n");
     char* pointer_read_only = (char*)shmat(shmid, (void*)0, SHM_RDONLY);
 
-    printf("Attempting to overwrite...\n");
-    // for(int i = 0; i < 10; i++)
-    //     *(pointer_read_only + i) = 'b';    
-    printf("I have commented out the next two lines where we attempt to overwrite using a read_only pointer, which eventually results in a seg fault!\n");
+    // printf("Attempting to overwrite...\n");
+    // scanf(" %[^\n]",pointer_read_only);
+    // printf("Data is: %s \n",pointer_read_only);   
+    // printf("I have commented out the next two lines where we attempt to overwrite using a read_only pointer, which eventually results in a seg fault!\n");
     
     printf("Reading after an overwrite attempt!\n");
-    printf("Data is: %s \n ",pointer);
+    printf("Data is: %s \n",data);
     
     printf("Detaching the memory segments...\n");
-    int val = shmdt(pointer);
+    result = shmdt(data);
+    if(result != 0)
+        printf("Detach failed!\n");
+    
+    result = shmdt(pointer_read_only);    
+    if(result != 0)
+        printf("Detach failed!\n");
+    
+    printf("Removing the shared memory...\n");    
+    result = shmctl(shmid,IPC_RMID,NULL);
 
-    if(val != 0)
-        printf("Detach failed!\n");
-    
-    val = shmdt(pointer_read_only);
-    
-    if(val != 0)
-        printf("Detach failed!\n");
-    
-    printf("Removing the shared memory...\n");
-    
-    shmctl(shmid, IPC_RMID,NULL);    
+    if(result==0)
+    {
+        printf("Shared memory removed sucesfully \n");
+    }
+    else
+    {
+        printf("Shared memory can't be removed \n");
+    }
     return 0;
 }
