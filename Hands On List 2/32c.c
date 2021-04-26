@@ -1,73 +1,42 @@
-/*program to perform Record locking.using write lock*/
-#include<stdio.h>
-#include<unistd.h>
-#include<fcntl.h>
-#include<sys/stat.h>
-#include<sys/types.h>
-#include<sys/ipc.h>
-#include<sys/sem.h>
+//creating shared memory
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
+#include <unistd.h>
 
-
-typedef struct ticket{
-	char train_name[80];
-	int ticketno;
-} ticket;
-
-union semun
+void init(char* pointer, int size)
 {
-    int val; 
-    struct semid_ds *buf;
-    unsigned short int *array; 
-};
+    for(int i = 0; i < size; i++)
+        *(pointer+i) = '\0';
+}
 
-int main(void){
+int main()
+{
+    key_t key, key1, key2;
+    key = ftok(".", 's');
+    key1 = key + 1; // pseudoresources
+    key2 = key + 2; // pseudoresources
+    int size = 1024;
 
-	int fd;
-	int recordnum=2;
-	ticket tk;
-	printf("Accessing record 2\n");
-
-	fd=open("record",O_RDWR);
-	
-    lseek(fd,(recordnum-1)*sizeof(ticket),SEEK_SET);//to seek a position after the start of a file
-	read(fd,&tk,sizeof(ticket));
-	printf("Ticket number :  %d\n",tk.ticketno);
-
-	int key, semid;
-	key=ftok(".",'b');
-	
-	struct sembuf buf[2]= {{0, -1, 0}, {0, -1, 0}};//-1+previous value
-	semid=semget(key,2,0);
-    semop(semid,&buf[0],1);
-	
+    int shmid = shmget(key,size,0666|IPC_CREAT); 
+    int shmid1 = shmget(key1,size,0666|IPC_CREAT); 
+    int shmid2 = shmget(key2,size,0666|IPC_CREAT); 
     
-    printf("Entered the critical section\n");
-	tk.ticketno++;
-	lseek(fd,-sizeof(ticket),SEEK_CUR);// to go to start of the record which should be locked 
-	write(fd,&tk,sizeof(ticket));
-	printf("train num : %s\n",tk.train_name);
-	printf("ticket no: %d\n",tk.ticketno);
-	getchar();
-    getchar();
-	
-    buf[0].sem_op=1;
-	semop(semid,&buf[0],1);
-
-
-
-    semop(semid,&buf[1],1);
-    printf("Entered the critical section\n");
-	tk.ticketno++;
-	lseek(fd,-sizeof(ticket),SEEK_CUR);// to go to start of the record which should be locked 
-	write(fd,&tk,sizeof(ticket));
-	printf("train num : %s\n",tk.train_name);
-	printf("ticket no: %d\n",tk.ticketno);
-	getchar();
-    getchar();
-	
-    buf[1].sem_op=1;
-	semop(semid,&buf[0],1);
-
-	close(fd);
- 	return 0;
+	printf("ID for the shared memory is: %d\n", shmid);
+    printf("ID for the shared memory is: %d\n", shmid1);
+    printf("ID for the shared memory is: %d\n", shmid2);
+    
+	char *pointer = (char*) shmat(shmid,(void*)0,0); 
+    char *pointer1 = (char*) shmat(shmid1,(void*)0,0); 
+    char *pointer2 = (char*) shmat(shmid2,(void*)0,0); 
+    
+	printf("Initializing the segment!\n");
+    
+	init(pointer, size);
+    init(pointer1, size);
+    init(pointer2, size);
+    
+	return 0;
 }

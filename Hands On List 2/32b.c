@@ -1,34 +1,31 @@
-#include<sys/types.h>
-#include<sys/sem.h>
-#include<sys/shm.h>
-#include<sys/ipc.h>
-#include<stdio.h>
-#include<fcntl.h>
-#include<stdlib.h>
-#include<unistd.h>
+//Creaitng semaphore
+#include <stdio.h>
+#include <sys/sem.h>
+
+union semun
+{
+    int val;
+    unsigned short int* array;
+} arg;
 
 int main()
 {
-    int key =  ftok(".",'a');
-    int semaphore_id = semget(key, 1, 0);
-    struct sembuf buf={0,-1,0}; 
+    key_t key;
+    key = ftok(".",'a');
+    
+    printf("Creating a set of 2 semaphores...\n");
+    static ushort semarray[3]={1,2,3}; // since we are going to create 1 binary and 2 counting semaphore
 
-    semop(semaphore_id, &buf, 1); 
-    printf("Entering critical section...\n");
-
-    int shmem_id = shmget(key,1024,IPC_CREAT|0744);
-    printf("Shared memory ID = %d\n", shmem_id);
-
-    char *ptr = shmat(shmem_id, NULL, 0); 
-	printf("Enter data to write in shared memory\n");
-    scanf( "%s",ptr); 
-
-    printf("Enter to unlock.\n");
-    getchar();
-    getchar();
-
-    buf.sem_op = 1;	
-    semop(semaphore_id,&buf,1);
-
+    int semid = semget(key,3,IPC_CREAT|0666);
+    
+    printf("Making the first semaphore in the set a binary semaphore...\n");
+    arg.val = 1;
+    semctl(semid, 0, SETVAL, arg);
+    
+    printf("Making the second semaphore in the set a counting semaphore...\n");
+    arg.val = 2;
+    semctl(semid, 1, SETVAL, arg);
+    semctl(semid, 2, SETVAL, arg);
+    
     return 0;
 }
