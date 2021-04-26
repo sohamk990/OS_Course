@@ -23,7 +23,7 @@ int main()
     system("ipcs -q");
 
     // removing this message queue
-    result = msgctl(msgid, IPC_RMID, NULL);
+    result = msgctl(msgid, IPC_RMID,NULL);
     if(result == -1)
     {
         printf("Message Queu can't be removed");

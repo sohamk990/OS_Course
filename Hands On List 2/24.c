@@ -15,7 +15,7 @@ struct message_buffer
 int main()
 {
     key_t key; 
-    int msgid; 
+    int msgid,result; 
   
     // ftok to generate unique key
     key = ftok(".", 'a'); 
@@ -31,5 +31,11 @@ int main()
     printf("Key for the message queue: %d\n", key);
     printf("Id of the message queue: %d\n", msgid);
     
+    result = msgctl(msgid, IPC_RMID,NULL);
+    if(result == -1)
+    {
+        printf("Message Queu can't be removed");
+    }
+
     return 0;   
 }

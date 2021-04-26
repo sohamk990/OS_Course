@@ -16,7 +16,7 @@ struct message_buffer
 int main()
 {
     key_t key; 
-    int msgid,method; 
+    int msgid,method,value,result; 
     struct message_buffer msg;
 
     // ftok to generate unique key
@@ -38,12 +38,22 @@ int main()
         printf("This will wait for the message. \n");
         msgrcv(msgid, &msg, sizeof(struct message_buffer), 0, 0);
         printf("%s\n", msg.message_text);
+        result = msgctl(msgid, IPC_RMID,NULL);
+        if(result == -1)
+        {
+            printf("Message Queu can't be removed");
+        }
     }
     else if(method==2)
     {
         printf(" This will not wait for the message. \n");
         msgrcv(msgid, &msg, sizeof(struct message_buffer), 0, IPC_NOWAIT);
         printf("%s\n", msg.message_text);
+        result = msgctl(msgid, IPC_RMID,NULL);
+        if(result == -1)
+        {
+            printf("Message Queu can't be removed");
+        }
     }
     else
     {

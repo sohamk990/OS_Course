@@ -7,7 +7,7 @@
 int main()
 {
     key_t key;
-    int msgid,val;
+    int msgid,val,result;
     struct msqid_ds info;
     struct ipc_perm info_;
 
@@ -46,6 +46,12 @@ int main()
 
     printf("PID of last message sent: %d\n", info.msg_lspid);
     printf("PID of last message received: %d\n", info.msg_lrpid);
+
+    result = msgctl(msgid, IPC_RMID,NULL);
+    if(result == -1)
+    {
+        printf("Message Queu can't be removed");
+    }
     
     return 0;
 

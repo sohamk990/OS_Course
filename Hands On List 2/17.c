@@ -28,6 +28,7 @@ int main()
     {
         // closing the read end of the pipe
         close(pipefd[0]);
+
         //closing normal stdout
         close(1);
 

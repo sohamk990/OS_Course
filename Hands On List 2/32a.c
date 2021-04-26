@@ -19,6 +19,7 @@ int main()
     int semid,shmid1,shmid2,shmid3,size,number_0f_semaphore,ndata1,ndata2,ndata3,result;
     union semun arg;
 
+    //creating semaphore
     key = ftok(".",'a');
     number_0f_semaphore = 3;
     semid = semget( key, number_0f_semaphore , 0666| IPC_CREAT );
@@ -35,6 +36,7 @@ int main()
     printf("Semaphore Id: %d\n",semid);
 
     
+    //creating shared memory
     key1 = key + 1;
     key2 = key + 2; 
     key3 = key + 3;
@@ -66,9 +68,6 @@ int main()
     printf("Data3: ");
     scanf(" %[^\n]",data3);
 
-    // int data = read_data(pointer, size);
-    // int data1 = read_data(pointer1, size);
-    // int data2 = read_data(pointer2, size);
     
     printf("Initial data: \n");
     printf("Data1: %s\n", data1);

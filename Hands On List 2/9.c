@@ -9,6 +9,7 @@ int main()
     int pid;
     pid = fork();
 
+    //parent
     if(pid != 0)
     {        
         sleep(1);
