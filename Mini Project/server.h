@@ -20,7 +20,7 @@ bool server_delete_joint_user(int ID);
 bool server_modify_normal_user(normal_user modUser);
 bool server_modify_joint_user(joint_user modUser);
 float server_get_user_balance(int accType,int ID);
-
+void server_get_transaction_details(int nsd,int account_type,int current_userID);
 void server_task_handler(int nsd);
 void *server_connection_handler(void *nsd);
 

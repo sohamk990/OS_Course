@@ -89,8 +89,6 @@ joint_user server_get_joint_user(int ID)
 	return user;
 }
 
-
-
 bool server_check_normal_user_password(normal_user current_user)
 {
 	int i=current_user.userID-1000;

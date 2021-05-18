@@ -1,7 +1,13 @@
 #ifndef DATABASE_H
 #define DATABASE_H
 
-#include<stdbool.h>
+
+typedef struct transaction
+{
+	int userID;
+	char transaction[50];
+	float value;
+}transaction;
 
 typedef struct normal_user
 {
@@ -31,10 +37,5 @@ typedef struct admin_user
 	char password[10];
 } admin_user;
 
-typedef struct transaction
-{
-	int userID;
-	char transaction[50];
-	float value;
-}transaction;
+
 #endif

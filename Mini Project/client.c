@@ -9,41 +9,6 @@
 
 #include "client.h"
 
-void client_choose_option(int sd)
-{
-	while(1)
-	{
-		write(1,"Choose Your Account Type \n",sizeof("Choose Your Account Type \n"));
-		write(1,"1)Normal User\n",sizeof("1)Normal User\n"));
-		write(1,"2)Joint Account User \n",sizeof("2)Joint Account User \n"));
-		write(1,"3)Admin Login \n",sizeof("3)Admin Login \n"));
-		
-		write(1,"Choose the account type: ",sizeof("Choose the account type: "));
-		scanf("%d",&account_type);
-
-		if(account_type == 1)
-		{
-			client_normal_user_login(sd); 
-			break;
-		}
-		else if(account_type == 2)
-		{
-			client_joint_user_login(sd);
-			break;
-		}
-		else if(account_type == 3)
-		{
-			client_admin_user_login(sd);
-			break;
-		}
-		else
-		{
-			write(1,"Invalid Choice!! \n\n",sizeof("Invalid Choice!! \n\n"));
-		}
-	}
-	return;
-}
-
 void client_show_menu(int sd)
 {
 	int select;
@@ -132,6 +97,41 @@ void client_show_menu(int sd)
 			client_show_menu(sd);
 		}
 	}
+}
+
+void client_choose_option(int sd)
+{
+	while(1)
+	{
+		write(1,"Choose Your Account Type \n",sizeof("Choose Your Account Type \n"));
+		write(1,"1)Normal User\n",sizeof("1)Normal User\n"));
+		write(1,"2)Joint Account User \n",sizeof("2)Joint Account User \n"));
+		write(1,"3)Admin Login \n",sizeof("3)Admin Login \n"));
+		
+		write(1,"Choose the account type: ",sizeof("Choose the account type: "));
+		scanf("%d",&account_type);
+
+		if(account_type == 1)
+		{
+			client_normal_user_login(sd); 
+			break;
+		}
+		else if(account_type == 2)
+		{
+			client_joint_user_login(sd);
+			break;
+		}
+		else if(account_type == 3)
+		{
+			client_admin_user_login(sd);
+			break;
+		}
+		else
+		{
+			write(1,"Invalid Choice!! \n\n",sizeof("Invalid Choice!! \n\n"));
+		}
+	}
+	return;
 }
 
 void client_normal_user_login(int sd)
