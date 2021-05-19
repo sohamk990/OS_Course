@@ -1,3 +1,10 @@
+// Program Number:  
+// Student Name: SOHAM KOLHE 
+// Register Number: IMT2018073
+// Date: 19 MAY 2021
+
+// Description:
+
 //Creaitng semaphore
 #include <stdio.h>
 #include <sys/sem.h>
